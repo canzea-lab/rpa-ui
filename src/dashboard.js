@@ -8,6 +8,7 @@ class Dashboard extends React.Component {
 
   componentDidMount() {
     this.openSocket();
+    this.startMic();
   }
 
   componentWillUnmount() {
@@ -16,10 +17,21 @@ class Dashboard extends React.Component {
     }
   }
 
+  startMic = () => {
+        require('./microphone');
+  };
+
   openSocket = () => {
     this.socket = new WebSocket('ws://20.20.20.20:7777');;
     this.socket.onmessage = this.onMessage;
     this.socket.onopen = this.onSocketOpen;
+
+    this.socket.onerror = (err) => {
+        console.log("Error - "+err);
+    };
+    this.socket.onclose = () => {
+        console.log("Closed");
+    };
   };
 
   onSocketOpen = () => console.log('[SOCKET] connected');
@@ -36,7 +48,12 @@ class Dashboard extends React.Component {
     return (
         <Card>
             <CardHeader title="Welcome to the administration" />
-            <CardContent>Lorem ipsum sic dolor amet...</CardContent>
+            <CardContent>Lorem ipsum sic dolor amet...
+
+                <button id="my-start-button">Start</button>
+                <button id="my-stop-button">Stop</button>
+
+            </CardContent>
         </Card>
     )
   }
