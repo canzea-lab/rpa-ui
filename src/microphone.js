@@ -1,6 +1,9 @@
 var getUserMedia = require('get-user-media-promise');
 var MicrophoneStream = require('microphone-stream');
 
+
+var exported = {}
+
 function convertFloat32ToInt16(buffer) {
   var l = buffer.length;
   var buf = new Int16Array(l);
@@ -11,17 +14,19 @@ function convertFloat32ToInt16(buffer) {
 }
 
 
-document.getElementById('my-start-button').onclick = function() {
+exported.turnOn = function() {
 
   var onSocketOpen = () => console.log('[STREAM SOCKET] connected');
 
   var socket = new WebSocket('ws://20.20.20.20:3333');;
   socket.onopen = this.onSocketOpen;
 
+  exported.socket = socket;
 
+  exported.micStream = new MicrophoneStream();
   // note: for iOS Safari, the constructor must be called in response to a tap, or else the AudioContext will remain
   // suspended and will not provide any audio data.
-  var micStream = new MicrophoneStream();
+  var micStream = exported.micStream;
 
   getUserMedia({ video: false, audio: true })
     .then(function(stream) {
@@ -56,10 +61,12 @@ document.getElementById('my-start-button').onclick = function() {
     console.log(format);
   });
 
-  // Stop when ready
-  document.getElementById('my-stop-button').onclick = function() {
+}
+
+exported.turnOff = function() {
     console.log("Stopping mic");
-    micStream.stop();
-    socket.close();
-  };
- }
+    exported.micStream.stop();
+    exported.socket.close();
+}
+
+module.exports = exported;
