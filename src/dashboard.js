@@ -19,7 +19,7 @@ class Dashboard extends React.Component {
   }
 
   openSocket = () => {
-    this.socket = new WebSocket('wss://rpa-channel.intg.ws.189544.xyz:7777');
+    this.socket = new WebSocket('wss://rpa-channel.intg.ws.189544.xyz');
     this.socket.onmessage = this.onMessage;
     this.socket.onopen = this.onSocketOpen;
 

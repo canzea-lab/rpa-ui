@@ -18,7 +18,7 @@ exported.turnOn = function() {
 
   var onSocketOpen = () => console.log('[STREAM SOCKET] connected');
 
-  var socket = new WebSocket('wss://rpa-channel.intg.ws.189544.xyz:7777');
+  var socket = new WebSocket('wss://rpa-channel.intg.ws.189544.xyz');
   socket.onopen = this.onSocketOpen;
 
   exported.socket = socket;
